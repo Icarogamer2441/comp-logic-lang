@@ -13,11 +13,14 @@ T_OUTNOT = 8
 T_IMPORT = 9
 T_START = 10
 T_CUSTOM = 11
+T_SAVEOUT = 12
+T_LOADOUT = 13
 
 class Logical:
     def __init__(self):
         self.outputs = []
         self.result = True
+        self.saved_outs = []
 
     def output(self):
         self.outputs.append(self.result)
@@ -60,6 +63,12 @@ class Logical:
         INPUT = self.outputs.pop()
         self.result = not INPUT
 
+    def saveout(self):
+        self.saved_outs.append(self.outputs.pop())
+
+    def loadout(self):
+        self.result = self.saved_outs.pop()
+
 def Lex(code):
     splitted = code.split()
     tokenpos = 1
@@ -99,6 +108,10 @@ def Lex(code):
                 tokens.append((T_IMPORT,))
             elif token == "start":
                 tokens.append((T_START,))
+            elif token == "saveout":
+                tokens.append((T_SAVEOUT,))
+            elif token == "loadout":
+                tokens.append((T_LOADOUT,))
             else:
                 tokens.append((T_CUSTOM, token))
         elif in_str[0]:
@@ -156,6 +169,10 @@ def interpret(code):
                 logic[0].start()
             elif token[0] == T_OUTNOT:
                 logic[0].OUTNOT()
+            elif token[0] == T_SAVEOUT:
+                logic[0].saveout()
+            elif token[0] == T_LOADOUT:
+                logic[0].loadout()
             elif token[0] == T_CUSTOM:
                 if token[1] in logics.keys():
                     interpret(logics.get(token[1]))
