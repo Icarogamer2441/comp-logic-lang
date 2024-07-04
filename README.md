@@ -3,3 +3,6 @@ an esoteric programming language made to simulate computer logic using only 'and
 
 # Keywords
 see [logic py](./logic.py) to see all keywords in function Lex()
+
+# playground
+[see here](https://icarogamer2441.github.io/logicplay/)
